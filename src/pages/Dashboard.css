@@ -1,0 +1,115 @@
+/* Main Dashboard */
+.dashboard {
+  min-height: 100vh;
+  background-color: #f4f6f8;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+.dashboard-header {
+  background-color: #2563eb;
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* Logout Button */
+.dashboard-header button {
+  background-color: white;
+  color: #2563eb;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.dashboard-header button:hover {
+  background-color: #e5e7eb;
+}
+
+/* Main Content */
+.dashboard-content {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.dashboard-content h2 {
+  font-size: 30px;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.dashboard-content > p {
+  color: #666;
+  font-size: 17px;
+}
+
+/* Cards */
+.dashboard-cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+/* Individual Card */
+.card {
+  background-color: white;
+  width: 280px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  color: #222;
+  font-size: 21px;
+}
+
+.card p {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+/* Card Buttons */
+.card button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.card button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .dashboard-header {
+    padding: 15px 20px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 18px;
+  }
+
+  .dashboard-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 80%;
+  }
+}
