@@ -1,29 +1,98 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Document.css";
 
 function Document() {
   const [documentName, setDocumentName] = useState("");
   const [documents, setDocuments] = useState([]);
 
-  const handleAddDocument = () => {
+  // Get documents from backend
+  const fetchDocuments = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/documents");
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setDocuments(data);
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.log("Fetch error:", error);
+      alert("Cannot connect to server");
+    }
+  };
+
+  // Load documents when page opens
+  useEffect(() => {
+    fetchDocuments();
+  }, []);
+
+  // Add document
+  const handleAddDocument = async () => {
     if (documentName.trim() === "") {
       alert("Please enter document name");
       return;
     }
 
-    setDocuments([...documents, documentName]);
-    setDocumentName("");
+    try {
+      const response = await fetch("http://localhost:5000/api/documents", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          documentName: documentName,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // alert("Document added successfully");
+
+        setDocumentName("");
+
+        fetchDocuments();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.log("Add document error:", error);
+      alert("Cannot connect to server");
+    }
   };
 
-  const handleDelete = (index) => {
-    const updatedDocuments = documents.filter((_, i) => i !== index);
-    setDocuments(updatedDocuments);
+  // Delete document
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/documents/${id}`,
+        {
+          method: "DELETE",
+        },
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Document deleted successfully");
+
+        fetchDocuments();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.log("Delete error:", error);
+      alert("Cannot connect to server");
+    }
   };
 
   return (
     <div className="document-page">
       <h1>Document Management</h1>
 
+      {/* Add Document */}
       <div className="document-form">
         <input
           type="text"
@@ -35,17 +104,18 @@ function Document() {
         <button onClick={handleAddDocument}>Add Document</button>
       </div>
 
+      {/* Document List */}
       <div className="document-list">
         <h2>Documents</h2>
 
         {documents.length === 0 ? (
           <p>No documents added yet.</p>
         ) : (
-          documents.map((document, index) => (
-            <div className="document-item" key={index}>
-              <span>{document}</span>
+          documents.map((document) => (
+            <div className="document-item" key={document._id}>
+              <span>{document.documentName}</span>
 
-              <button onClick={() => handleDelete(index)}>Delete</button>
+              <button onClick={() => handleDelete(document._id)}>Delete</button>
             </div>
           ))
         )}

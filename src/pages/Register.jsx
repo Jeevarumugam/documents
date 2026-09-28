@@ -2,32 +2,45 @@ import React, { useState } from "react";
 import "./Register.css";
 
 function Register() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmpassword, setconformPassword] = useState("");
+  const [confirmpassword, setconfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const alreadyRegistered = localStorage.getItem("registered");
-
-    if (alreadyRegistered === "true") {
-      alert("Already registered. Please login");
-      window.location.href = "/Login";
-      return;
-    }
 
     if (password !== confirmpassword) {
       alert("Passwords do not match");
       return;
     }
-    localStorage.setItem("registeredEmail", email);
-    localStorage.setItem("registeredPassword", password);
-    localStorage.setItem("registered", "true");
 
-    alert("Registration Successful");
+    try {
+      const response = await fetch("http://localhost:5000/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          password: password,
+        }),
+      });
 
-    window.location.href = "/Login";
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Registration Successful");
+        window.location.href = "/login";
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.log("REGISTER ERROR:", error);
+      alert("REGISTER ERROR:" + error.message);
+    }
   };
 
   return (
@@ -37,6 +50,8 @@ function Register() {
         <input
           className="register-form-input"
           type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           placeholder="Enter name"
           required
         />
@@ -45,6 +60,8 @@ function Register() {
         <input
           className="register-form-input"
           type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter email"
           required
         />
@@ -76,7 +93,7 @@ function Register() {
           type={showPassword ? "text" : "password"}
           placeholder="Confirm Password"
           value={confirmpassword}
-          onChange={(e) => setconformPassword(e.target.value)}
+          onChange={(e) => setconfirmPassword(e.target.value)}
           required
         />
         <label>

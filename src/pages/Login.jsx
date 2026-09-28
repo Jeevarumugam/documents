@@ -15,7 +15,7 @@ function Login() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch("http://localhost:5000/api/users/login", {
         method: "POST",
 
         headers: {
@@ -33,14 +33,16 @@ function Login() {
       console.log(data);
 
       if (response.ok) {
+        localStorage.setItem("email", email);
+        localStorage.setItem("isLoggedIn", "true");
         alert("Login successful");
         window.location.href = "/dashboard";
       } else {
         alert(data.message);
       }
     } catch (error) {
-      console.log(error);
-      alert("Server connection failed");
+      console.log("LOGIN ERROR:", error);
+      alert(error.message);
     }
   };
   return (

@@ -1,3 +1,4 @@
+// import { useEffect } from "react";
 import Register from "./pages/Register";
 import "./App.css";
 import Login from "./pages/Login";
@@ -6,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Document from "./pages/Document";
 
 function App() {
+
   return (
     <BrowserRouter>
       <Routes>
