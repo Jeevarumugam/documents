@@ -8,7 +8,9 @@ function Document() {
   // Get documents from backend
   const fetchDocuments = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/documents");
+      const response = await fetch(
+        "https://documents-gn6l.onrender.com/api/documents",
+      );
 
       const data = await response.json();
 
@@ -36,15 +38,18 @@ function Document() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/documents", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://documents-gn6l.onrender.com/api/documents",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            documentName: documentName,
+          }),
         },
-        body: JSON.stringify({
-          documentName: documentName,
-        }),
-      });
+      );
 
       const data = await response.json();
 
@@ -67,7 +72,7 @@ function Document() {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/documents/${id}`,
+        `https://documents-gn6l.onrender.com/api/documents/${id}`,
         {
           method: "DELETE",
         },
